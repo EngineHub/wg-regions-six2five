@@ -1,0 +1,45 @@
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.1.1'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'com.github.johnrengelman.shadow'
+
+sourceCompatibility = 1.6
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    maven { url = "http://maven.sk89q.com/repo/" }
+}
+
+dependencies {
+    compile 'org.yaml:snakeyaml:1.14'
+    compile 'com.sk89q:squirrelid:0.1.0'
+    compile 'com.google.guava:guava:17.0'
+    compile 'com.google.code.findbugs:jsr305:1.3.9'
+    compile 'net.sf.jopt-simple:jopt-simple:4.8'
+    compile 'com.googlecode.json-simple:json-simple:1.1.1'
+    testCompile 'junit:junit:4.11'
+}
+
+jar {
+    manifest {
+        attributes("Main-Class": "com.sk89q.worldguard.six2five.Six2Five")
+    }
+}
+
+shadowJar {
+    dependencies {
+        include(dependency('org.yaml:snakeyaml'))
+        include(dependency('com.sk89q:squirrelid'))
+        include(dependency('com.google.guava:guava'))
+        include(dependency('net.sf.jopt-simple:jopt-simple'))
+        include(dependency('com.googlecode.json-simple:json-simple'))
+    }
+}
+
+build.dependsOn(shadowJar)
